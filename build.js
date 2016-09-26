@@ -63,7 +63,7 @@ var releases = {
 			'snap/snap.js',
 			'keys/keys.js',
 			'probe/_animate.js',
-			'default/handleEvent.js',
+			'zoom/handleEvent.js',
 			'indicator/indicator.js'
 		],
 		postProcessing: [ 'zoom/build.json', 'indicator/build.json', 'wheel/build.json', 'snap/build.json', 'keys/build.json', 'probe/build.json' ]

@@ -1782,11 +1782,19 @@ IScroll.prototype = {
 			case 'MSPointerDown':
 			case 'mousedown':
 				this._start(e);
+
+				if ( this.options.zoom && e.touches && e.touches.length > 1 ) {
+					this._zoomStart(e);
+				}
 				break;
 			case 'touchmove':
 			case 'pointermove':
 			case 'MSPointerMove':
 			case 'mousemove':
+				if ( this.options.zoom && e.touches && e.touches[1] ) {
+					this._zoom(e);
+					return;
+				}
 				this._move(e);
 				break;
 			case 'touchend':
@@ -1797,6 +1805,10 @@ IScroll.prototype = {
 			case 'pointercancel':
 			case 'MSPointerCancel':
 			case 'mousecancel':
+				if ( this.scaled ) {
+					this._zoomEnd(e);
+					return;
+				}
 				this._end(e);
 				break;
 			case 'orientationchange':
@@ -1812,19 +1824,18 @@ IScroll.prototype = {
 			case 'wheel':
 			case 'DOMMouseScroll':
 			case 'mousewheel':
+				if ( this.options.wheelAction == 'zoom' ) {
+					this._wheelZoom(e);
+					return;	
+				}
 				this._wheel(e);
 				break;
 			case 'keydown':
 				this._key(e);
 				break;
-			case 'click':
-				if ( this.enabled && !e._constructed ) {
-					e.preventDefault();
-					e.stopPropagation();
-				}
-				break;
 		}
 	}
+
 };
 function createDefaultScrollbar (direction, interactive, type) {
 	var scrollbar = document.createElement('div'),
